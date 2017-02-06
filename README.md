@@ -1,5 +1,5 @@
 # EmailSpamTester
-Email SPAM checker for [Nette](https://github.com/nette) using ```templateria/spamassassin```.
+Email SPAM checker for [Nette](https://github.com/nette) using [templateria/spamassassin](https://github.com/templateria/php-spamassassin).
 
 ## Configuration
 ```
@@ -18,4 +18,11 @@ dump($emailTester->getSpamReport($message));
 dump($emailTester->getSymbols($message));
 dump($emailTester->getScore($message));
 dump($emailTester->isSpam($message));
+```
+
+## Install via Composer
+```
+"require": {
+	"tomaskarlik/emailspamtester" : "dev-master"
+}
 ```
