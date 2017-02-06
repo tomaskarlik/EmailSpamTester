@@ -12,6 +12,7 @@
 namespace TomasKarlik\EmailSpamTester\Service;
 
 use Nette\Mail\Message;
+use Nette\Utils\Random;
 use Spamassassin\Client;
 use Spamassassin\Client\Result;
 
@@ -43,7 +44,7 @@ class Tester
 	public function isSpam(Message $message)
 	{
 		$client = $this->getClient();
-		$body = $message->generateMessage();
+		$body = $this->generateRawMessage($message);
 
 		return $client->isSpam($body);
 	}
@@ -56,7 +57,7 @@ class Tester
 	public function getScore(Message $message)
 	{
 		$client = $this->getClient();
-		$body = $message->generateMessage();
+		$body = $this->generateRawMessage($message);
 
 		return $client->getScore($body);
 	}
@@ -69,7 +70,7 @@ class Tester
 	public function getSpamReport(Message $message)
 	{
 		$client = $this->getClient();
-		$body = $message->generateMessage();
+		$body = $this->generateRawMessage($message);
 
 		return $client->getSpamReport($body);
 	}
@@ -82,7 +83,7 @@ class Tester
 	public function getSymbols(Message $message)
 	{
 		$client = $this->getClient();
-		$body = $message->generateMessage();
+		$body = $this->generateRawMessage($message);
 
 		return $client->symbols($body);
 	}
@@ -103,10 +104,41 @@ class Tester
 	final public function getClient()
 	{
 		if ( ! self::$client) {
-		    self::$client = new Client($this->parameters);
+			$keys = array_flip([
+				'hostname',
+				'port',
+				'socketPath',
+				'socket',
+				'protocolVersion',
+				'enableZlib'
+			]);
+			$parameters = array_intersect_key($this->parameters, $keys);
+			self::$client = new Client($parameters);
 		}
 
 		return self::$client;
+	}
+
+
+	/**
+	 * @param Message $message
+	 * @return string
+	 */
+	private function generateRawMessage(Message $message)
+	{
+		if (isset($this->parameters['received']) && $this->parameters['received']) {
+			if ($message->getHeader('To') === NULL) { //default To header for testing
+				$message->addTo('user@mail.local');
+			}
+
+			if ($message->getHeader('Received') === NULL) { //default Received header for testing - RCVD_REMOVED
+				$to = $message->getHeader('To');
+				$message->setHeader('Received', sprintf("from localhost (localhost [127.0.0.1])\nby localhost (Postfix) with ESMTP id %s\nfor <%s>; %s",
+					Random::generate(10), reset($to), date('r')));
+			}
+		}
+
+		return $message->generateMessage();
 	}
 
 }

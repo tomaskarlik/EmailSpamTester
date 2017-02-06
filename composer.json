@@ -10,6 +10,7 @@
 		"php": ">=5.6",
 		"nette/di": "~2.4.0",
 		"nette/mail": "~2.4.0",
+		"nette/utils": "~2.4.0",
 		"templateria/spamassassin": "dev-master"
 	},
 	"autoload": {

@@ -8,6 +8,7 @@ spamassassin: TomasKarlik\EmailSpamTester\DI\EmailSpamTesterExtension
 spamassassin:
 	hostname: '127.0.0.1'
 	port: 783
+	received: TRUE #add Received header for testing
 ```
 
 ## Usage

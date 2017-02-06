@@ -30,7 +30,8 @@ class EmailSpamTesterExtension extends CompilerExtension
 		'socketPath' => NULL,
 		'socket' => NULL,
 		'protocolVersion' => '1.5',
-		'enableZlib' => FALSE
+		'enableZlib' => FALSE,
+		'received' => TRUE
 	];
 
 
