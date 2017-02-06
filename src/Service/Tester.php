@@ -133,8 +133,8 @@ class Tester
 
 			if ($message->getHeader('Received') === NULL) { //default Received header for testing - RCVD_REMOVED
 				$to = $message->getHeader('To');
-				$message->setHeader('Received', sprintf("from localhost (localhost [127.0.0.1])\nby localhost (Postfix) with ESMTP id %s\nfor <%s>; %s",
-					Random::generate(10), reset($to), date('r')));
+				$message->setHeader('Received', sprintf("from localhost (localhost [127.0.0.1]) by localhost (Postfix) with ESMTP id %s for <%s>; %s",
+					Random::generate(10), key($to), date('r')));
 			}
 		}
 
