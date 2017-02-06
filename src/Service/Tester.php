@@ -9,15 +9,20 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace TomasKarlik\EmailSpamTester\Serivce;
+namespace TomasKarlik\EmailSpamTester\Service;
 
-use Nette\Configurator;
-use Nette\DI\Compiler;
-use Nette\DI\CompilerExtension;
+use Nette\Mail\Message;
+use Spamassassin\Client;
+use Spamassassin\Client\Result;
 
 
 class Tester
 {
+
+	/**
+	 * @var Client
+	 */
+	static private $client = NULL;
 
 	/**
 	 * @var array
@@ -28,6 +33,80 @@ class Tester
 	public function __construct(array $parameters)
 	{
 		$this->parameters = $parameters;
+	}
+
+
+	/**
+	 * @param Message $message
+	 * @return bool
+	 */
+	public function isSpam(Message $message)
+	{
+		$client = $this->getClient();
+		$body = $message->generateMessage();
+
+		return $client->isSpam($body);
+	}
+
+
+	/**
+	 * @param Message $message
+	 * @return float
+	 */
+	public function getScore(Message $message)
+	{
+		$client = $this->getClient();
+		$body = $message->generateMessage();
+
+		return $client->getScore($body);
+	}
+
+
+	/**
+	 * @param Message $message
+	 * @return Result
+	 */
+	public function getSpamReport(Message $message)
+	{
+		$client = $this->getClient();
+		$body = $message->generateMessage();
+
+		return $client->getSpamReport($body);
+	}
+
+
+	/**
+	 * @param Message $message
+	 * @return array
+	 */
+	public function getSymbols(Message $message)
+	{
+		$client = $this->getClient();
+		$body = $message->generateMessage();
+
+		return $client->symbols($body);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function ping()
+	{
+		return $this->getClient()->ping();
+	}
+
+
+	/**
+	 * @return Client
+	 */
+	final public function getClient()
+	{
+		if ( ! self::$client) {
+		    self::$client = new Client($this->parameters);
+		}
+
+		return self::$client;
 	}
 
 }

@@ -1,7 +1,7 @@
 {
 	"name": "tomaskarlik/emailspamtester",
 	"description": "Util for check Nette mail message by spamassassin",
-	"keywords": ["spamassassin", "nette"],
+	"keywords": ["mail", "spamassassin", "nette"],
 	"license": "Apache-2.0",
 	"authors": [
 		{ "name": "Tomáš Karlík", "homepage": "http://tomaskarlik.cz" }

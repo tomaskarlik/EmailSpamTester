@@ -12,7 +12,7 @@
 namespace TomasKarlik\EmailSpamTester\DI;
 
 use Nette\DI\CompilerExtension;
-use TomasKarlik\EmailSpamTester\Serivce\Tester;
+use TomasKarlik\EmailSpamTester\Service\Tester;
 
 
 /**
@@ -40,8 +40,7 @@ class EmailSpamTesterExtension extends CompilerExtension
 		$config = $this->getConfig($this->defaults);
 
 		$builder->addDefinition($this->prefix('tester'))
-			->setClass(Tester::class)
-			->setParameters($config);
+			->setClass(Tester::class, [$config]);
 
 		$this->compiler->parseServices($builder, $config);
 	}
